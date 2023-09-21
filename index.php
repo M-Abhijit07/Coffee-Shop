@@ -1,4 +1,15 @@
 <?php require "includes/header.php"; ?>
+<?php require "config/config.php"; ?>
+
+<?php
+
+	$products = $conn->query("SELECT * FROM products WHERE type = 'drink'");
+	$products->execute();
+
+	$allProducts = $products->fetchAll(PDO::FETCH_OBJ);
+	
+
+?>
 
     <section class="home-slider owl-carousel">
       <div class="slider-item" style="background-image: url(images/bg_1.jpg);">
@@ -80,38 +91,38 @@
 	    		</div>
 	    		<div class="book p-4">
 	    			<h3>Book a Table</h3>
-	    			<form action="#" class="appointment-form">
+	    			<form action="booking/book.php" method="POST" class="appointment-form">
 	    				<div class="d-md-flex">
 		    				<div class="form-group">
-		    					<input type="text" class="form-control" placeholder="First Name">
+		    					<input type="text" name="first_name" class="form-control" placeholder="First Name">
 		    				</div>
 		    				<div class="form-group ml-md-4">
-		    					<input type="text" class="form-control" placeholder="Last Name">
+		    					<input type="text" name="last_name" class="form-control" placeholder="Last Name">
 		    				</div>
 	    				</div>
 	    				<div class="d-md-flex">
 		    				<div class="form-group">
 		    					<div class="input-wrap">
 		            		<div class="icon"><span class="ion-md-calendar"></span></div>
-		            		<input type="text" class="form-control appointment_date" placeholder="Date">
+		            		<input name="date" type="text" class="form-control appointment_date" placeholder="Date">
 	            		</div>
 		    				</div>
 		    				<div class="form-group ml-md-4">
 		    					<div class="input-wrap">
 		            		<div class="icon"><span class="ion-ios-clock"></span></div>
-		            		<input type="text" class="form-control appointment_time" placeholder="Time">
+		            		<input name="time" type="text" class="form-control appointment_time" placeholder="Time">
 	            		</div>
 		    				</div>
 		    				<div class="form-group ml-md-4">
-		    					<input type="text" class="form-control" placeholder="Phone">
+		    					<input name="phone" type="text" class="form-control" placeholder="Phone">
 		    				</div>
 	    				</div>
 	    				<div class="d-md-flex">
 	    					<div class="form-group">
-		              <textarea name="" id="" cols="30" rows="2" class="form-control" placeholder="Message"></textarea>
+		              <textarea name="message" id="" cols="30" rows="2" class="form-control" placeholder="Message"></textarea>
 		            </div>
 		            <div class="form-group ml-md-4">
-		              <input type="submit" value="Appointment" class="btn btn-white py-3 px-4">
+		              <button type="submit" name="submit" class="btn btn-white py-3 px-4">Book Table</button>
 		            </div>
 	    				</div>
 	    			</form>
@@ -182,7 +193,7 @@
 	          	<span class="subheading">Discover</span>
 	            <h2 class="mb-4">Our Menu</h2>
 	            <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
-	            <p><a href="#" class="btn btn-primary btn-outline-primary px-4 py-3">View Full Menu</a></p>
+	            <p><a href="menu.php" class="btn btn-primary btn-outline-primary px-4 py-3">View Full Menu</a></p>
 	          </div>
     			</div>
     			<div class="col-md-6">
@@ -271,50 +282,19 @@
           </div>
         </div>
         <div class="row">
+			<?php foreach($allProducts as $product) : ?>
         	<div class="col-md-3">
         		<div class="menu-entry">
-    					<a href="#" class="img" style="background-image: url(images/menu-1.jpg);"></a>
+    					<a target="_blank" href="products/product-single.php?id=<?php echo $product->id; ?>" class="img" style="background-image: url(<?php echo APPURL; ?>/images/<?php echo $product->image; ?>);"></a>
     					<div class="text text-center pt-4">
-    						<h3><a href="#">Coffee Capuccino</a></h3>
-    						<p>A small river named Duden flows by their place and supplies</p>
-    						<p class="price"><span>$5.90</span></p>
-    						<p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
+    						<h3><a href="#"><?php echo $product->name; ?></a></h3>
+    						<p><?php echo $product->description; ?></p>
+    						<p class="price"><span>$<?php echo $product->price; ?></span></p>
+    						<p><a target="_blank" href="products/product-single.php?id=<?php echo $product->id; ?>" class="btn btn-primary btn-outline-primary">Show</a></p>
     					</div>
     				</div>
         	</div>
-        	<div class="col-md-3">
-        		<div class="menu-entry">
-    					<a href="#" class="img" style="background-image: url(images/menu-2.jpg);"></a>
-    					<div class="text text-center pt-4">
-    						<h3><a href="#">Coffee Capuccino</a></h3>
-    						<p>A small river named Duden flows by their place and supplies</p>
-    						<p class="price"><span>$5.90</span></p>
-    						<p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
-    					</div>
-    				</div>
-        	</div>
-        	<div class="col-md-3">
-        		<div class="menu-entry">
-    					<a href="#" class="img" style="background-image: url(images/menu-3.jpg);"></a>
-    					<div class="text text-center pt-4">
-    						<h3><a href="#">Coffee Capuccino</a></h3>
-    						<p>A small river named Duden flows by their place and supplies</p>
-    						<p class="price"><span>$5.90</span></p>
-    						<p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
-    					</div>
-    				</div>
-        	</div>
-        	<div class="col-md-3">
-        		<div class="menu-entry">
-    					<a href="#" class="img" style="background-image: url(images/menu-4.jpg);"></a>
-    					<div class="text text-center pt-4">
-    						<h3><a href="#">Coffee Capuccino</a></h3>
-    						<p>A small river named Duden flows by their place and supplies</p>
-    						<p class="price"><span>$5.90</span></p>
-    						<p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
-    					</div>
-    				</div>
-        	</div>
+			<?php endforeach; ?>
         </div>
     	</div>
     </section>
